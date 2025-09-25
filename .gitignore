@@ -1,0 +1,83 @@
+# ------------------------------
+# OS-specific files
+# ------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------
+# Python cache & build
+# ------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ------------------------------
+# Virtual environments
+# ------------------------------
+.env
+.venv
+env/
+venv/
+ENV/
+.ipynb_checkpoints/
+
+# ------------------------------
+# Jupyter Notebook
+# ------------------------------
+*.ipynb_checkpoints
+.jupyter/
+
+# ------------------------------
+# Logs & databases
+# ------------------------------
+*.log
+*.sqlite3
+*.db
+
+# ------------------------------
+# IDE / Editor
+# ------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ------------------------------
+# Environment variables / secrets
+# ------------------------------
+*.env
+*.key
+*.json
+*.pem
+*.crt
+
+# ------------------------------
+# Data files (optional, uncomment if needed)
+# ------------------------------
+# *.csv
+# *.tsv
+# *.parquet
+# *.h5
+# *.feather
+# *.xlsx
+
+# ------------------------------
+# Outputs / Reports
+# ------------------------------
+*.pdf
+*.docx
+*.pptx
+*.html
+
+# ------------------------------
+# Misc
+# ------------------------------
+*.bak
+*.tmp
