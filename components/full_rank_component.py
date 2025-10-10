@@ -268,7 +268,7 @@ def make_full_rank_component(app, uid: str = "fullrank"):
 
         seed = int(store_data.get("seed", 0)) if store_data else 0
         local_rng = np.random.default_rng(seed)
-        X = local_rng.integers(0, 100, size=(n_val, p_val))
+        X = local_rng.integers(-9, 10, size=(n_val, p_val))
 
         xtx = X.T @ X
         rank = np.linalg.matrix_rank(X)
