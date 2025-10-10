@@ -94,7 +94,7 @@ app.layout = html.Div(
         # interactive_layout,
         # another_plot,
         render_section("contributors.md"),
-        dcc.Interval(id="refresh", interval=2000),
+        # dcc.Interval(id="refresh", interval=2000),
     ],
 )
 
