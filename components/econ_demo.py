@@ -86,7 +86,13 @@ def make_econ_component(app, uid="econ", *, n=50, seed=42):
         children=[
             html.H1('Why This Matters Today'),
             html.P("""
-High-dimensional regression is central in many fields: Genomics: finding key genes among thousands of measurements. Finance: forecasting outcomes like unemployment with many indicators. Image and speech recognition: working with pixel-level data where p >> n. Recommendation systems: filtering huge user–item datasets. In all of these areas, being able to identify the few predictors that matter is essential. This is why Lasso regression has become a cornerstone of high-dimensional analysis. It connects classical regression ideas to the demands of today’s big data world.
+High-dimensional regression is central in many fields:\n
+Genomics: finding key genes among thousands of measurements.\n
+Finance: forecasting outcomes like unemployment with many indicators.\n
+Image and speech recognition: working with pixel-level data where p >> n.\n
+Recommendation systems: filtering huge user–item datasets.\n
+In all of these areas, being able to identify the few predictors that matter is essential. This is why Lasso regression has become a cornerstone of high-dimensional analysis. It connects classical regression ideas to the demands of today’s big data world
+
             """),
             html.H3("Econometrics Demo", style={"textAlign": "center", "marginBottom": "0.4rem"}),
             html.P(
