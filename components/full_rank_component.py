@@ -12,6 +12,8 @@ from dash import MATCH, Input, Output, State, dcc, html, no_update
 def make_full_rank_component(app, uid: str = "fullrank"):
     """Return a Dash layout that explores full column rank in linear regression."""
 
+    debug = False  # Toggle to True for console diagnostics.
+
     rng = np.random.default_rng(2024)
 
     styles: Dict[str, Dict[str, str]] = {
@@ -268,7 +270,7 @@ def make_full_rank_component(app, uid: str = "fullrank"):
 
         seed = int(store_data.get("seed", 0)) if store_data else 0
         local_rng = np.random.default_rng(seed)
-        X = local_rng.integers(-9, 10, size=(n_val, p_val))
+        X = local_rng.integers(-9, 10, size=(n_val, p_val)).astype(float)
 
         xtx = X.T @ X
         rank = np.linalg.matrix_rank(X)
@@ -276,11 +278,24 @@ def make_full_rank_component(app, uid: str = "fullrank"):
         is_full_rank = rank == p_val
         near_singular = condition_number > 1e10
 
+        if debug:
+            print(">>> Checking matrix multiplication")
+            print(f"Seed: {seed}")
+            print(f"X shape: {X.shape}, dtype: {X.dtype}")
+            print(f"XᵀX shape: {xtx.shape}")
+            print("Sample X:\n", X[: min(5, n_val), : min(5, p_val)])
+            print("Sample XᵀX:\n", xtx[: min(5, p_val), : min(5, p_val)])
+
         xtx_inv: Optional[np.ndarray] = None
         inverse_message: Optional[str] = None
         if is_full_rank and not near_singular:
             try:
                 xtx_inv = np.linalg.inv(xtx)
+                if debug:
+                    identity_check = xtx_inv @ xtx
+                    print("Inverse computed.")
+                    print("Inverse(XᵀX) @ XᵀX ≈ I ? ", np.allclose(identity_check, np.eye(p_val)))
+                    print("Condition number:", condition_number)
             except np.linalg.LinAlgError:
                 xtx_inv = None
                 inverse_message = "Numerical inversion failed."
@@ -347,3 +362,32 @@ def make_full_rank_component(app, uid: str = "fullrank"):
         return warning_children, warning_style, summary_children, visuals_children
 
     return container
+
+
+def _diagnostic_suite():
+    print("=== Diagnostic suite for full_rank_component ===")
+    test_cases = [
+        np.array([[1., 2.], [3., 4.], [5., 6.]]),
+        np.array([[2., -1., 0.], [0., 1., 1.], [1., 1., 0.]]),
+    ]
+    for idx, X in enumerate(test_cases, start=1):
+        print(f"\nCase {idx}: X shape = {X.shape}")
+        XTX = X.T @ X
+        print("X:\n", X)
+        print("XᵀX:\n", XTX)
+        print("np.allclose(XᵀX, X.T @ X)?", np.allclose(XTX, X.T @ X))
+        det = np.linalg.det(XTX)
+        cond = np.linalg.cond(XTX)
+        print(f"det(XᵀX) = {det:.6f}")
+        print(f"cond(XᵀX) = {cond:.6f}")
+        try:
+            inv = np.linalg.inv(XTX)
+            print("(XᵀX)⁻¹:\n", inv)
+            identity_check = XTX @ inv
+            print("np.allclose((XᵀX) @ (XᵀX)⁻¹, I)?", np.allclose(identity_check, np.eye(XTX.shape[0])))
+        except np.linalg.LinAlgError:
+            print("Matrix is singular; inverse does not exist.")
+
+
+if __name__ == "__main__":
+    _diagnostic_suite()
