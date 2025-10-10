@@ -132,17 +132,17 @@ def make_lasso_component(app, uid="lasso", *, n=50, p=150):
             html.H1('A "Simple" Demonstration of LASSO Regularization'),
             html.P(
                 """
-To get a grasp of how the Lasso (Least Absolute Shrinkage and Selection Operator) regression method handles high dimensional data, it is best to look at a simple example. In the real world high dimensional data typically has thousands or even millions of parameters coupled with a smaller number of observations. However, these data sets do not lend themselves to easy explanations. Thus, we created a synthetic data set for demonstration purposes. 
+To get a grasp of how the LASSO regression method handles high dimensional data, it is best to look at a simple example. In the real world, high dimensional data sets have thousands or even millions of parameters coupled with a smaller number of observations. However, such data sets do not lend themselves to easy explanations. Thus, we created a synthetic data set for demonstration purposes. 
 """
             ),
             html.P(
                 """
-The interactive graph below is based on a data set we created with Numpy, a python module, that has 150 parameters (p=150) and 50 observations (n=50). This is no doubt a small data set. But, by definition, it is a high dimensional dataset none the less (p >> n). Because we created the data set, we had the luxury of making our own true β’s which are located at β20, β40, β60, β80, β99, and β100. We set a signal to noise ratio of 5 to create our X matrix, β Matrix, and error matrix resulting in a y equation at y = Xβ + ε. 
+The interactive graph below is based on our data set which we created with Numpy, a python module, and has 150 parameters (p=150) and 50 observations (n=50). This is no doubt a small data set. But, by definition, it is a high dimensional none the less (p >> n). Because the data is synthetic, we had the luxury of making our own true β’s which are located at β20, β40, β60, β80, β99, and β100. We set a signal to noise ratio of 5 to create our X matrix, β Matrix, error matrix and finally our y equation at y = Xβ + ε. 
 """
             ),
             html.P(
                 """
-Finally, using Sklearn, another python module, we split our synthetic data into a portion for training and a portion for testing and iteratively created 6 LASSO models at incremental alpha levels (0.0001, 0.001, 0.01, 0.1, 1, 10) to illustrate the model pushing β coefficients into and out of the model. Think of the alpha level as the “penalty” the model applies to each β coefficient. As the alpha level gets smaller, the β coefficients will receive a small push towards zero, leaving most of the coefficients in the model. Conversely, as the alpha level grows larger, the β coefficients receive a large push towards zero which removes many of the coefficients entirely.
+Finally, using Sklearn, another python module, we split our synthetic data into a portion for training and a portion for testing and iteratively created 6 LASSO models at incremental alpha levels (0.0001, 0.001, 0.01, 0.1, 1, 10) to illustrate the model pushing β coefficients into and out of the model. Think of the alpha level as the “penalty” the model applies to each β coefficient. As the alpha level gets smaller, the β coefficients receive a small push towards zero, leaving most of the coefficients in the model. Conversely, as the alpha level grows larger, the β coefficients receive a large push towards zero which removes many of the coefficients entirely.
 """
             ),
             html.Div(
@@ -150,7 +150,7 @@ Finally, using Sklearn, another python module, we split our synthetic data into 
                 style=styles["title"],
             ),
             html.Div(
-                "Move the alpha (α) slider to watch predictor add and drop from the model. True predictors are red.",
+                "Move the alpha (α) slider to watch predictors add and drop from the model. True predictors are red.",
                 style=styles["subtitle"],
             ),
             dcc.Slider(
