@@ -14,6 +14,7 @@ app = dash.Dash(__name__)
 NOTES_DIR = Path("notes")
 
 _SECTION_FILES = [
+    "contributors.md",
     "00_intro.md",
     "01_startMLR.md",
     "02_highdim_setting.md",
@@ -57,6 +58,7 @@ app.layout = html.Div(
         ),
         html.Hr(),
         # introduction
+        render_section("contributors.md"),
         render_section("00_intro.md"),
         render_section("01_startMLR.md"),
         render_section("02_highdim_setting.md"),
