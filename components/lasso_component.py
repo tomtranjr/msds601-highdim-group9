@@ -1,11 +1,11 @@
 # lasso_component.py
 import numpy as np
 import pandas as pd
+from dash import MATCH, Input, Output, dcc, html
 from sklearn.linear_model import Lasso
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from dash import dcc, html, Input, Output, MATCH
 
 
 def make_lasso_component(app, uid="lasso", *, n=50, p=150):
@@ -54,11 +54,19 @@ def make_lasso_component(app, uid="lasso", *, n=50, p=150):
     # 3) Styles (local)
     # ---------------------------
     styles = {
-        "wrap": {"maxWidth": "980px", "margin": "1rem auto", "fontFamily": "system-ui, Arial, sans-serif"},
+        "wrap": {
+            "maxWidth": "980px",
+            "margin": "1rem auto",
+            "fontFamily": "system-ui, Arial, sans-serif",
+        },
         "title": {"margin": "0 0 0.25rem 0", "fontSize": "20px", "fontWeight": 700},
         "subtitle": {"color": "#555", "marginBottom": "0.75rem", "fontSize": "14px"},
         "metrics": {"marginTop": "0.5rem", "fontSize": "14px", "color": "#333"},
-        "equation": {"fontSize": "20px", "lineHeight": "1.7", "overflowWrap": "anywhere"},
+        "equation": {
+            "fontSize": "20px",
+            "lineHeight": "1.7",
+            "overflowWrap": "anywhere",
+        },
         "plus": {"fontWeight": 400, "padding": "0 0.25rem"},
         "termBold": {"fontWeight": 700},
         "termRed": {"fontWeight": 700, "color": "#c62828"},
@@ -71,19 +79,29 @@ def make_lasso_component(app, uid="lasso", *, n=50, p=150):
     # ---------------------------
     def _beta_x_term(j1: int, is_true: bool):
         st = styles["termRed"] if is_true else styles["termBold"]
-        return html.Span([
-            html.Span("β", style={"fontStyle": "italic"}), html.Sub(str(j1)),
-            html.Span("("),
-            html.Span("x", style={"fontStyle": "italic"}), html.Sub(str(j1)),
-            html.Span(")"),
-        ], style=st)
+        return html.Span(
+            [
+                html.Span("β", style={"fontStyle": "italic"}),
+                html.Sub(str(j1)),
+                html.Span("("),
+                html.Span("x", style={"fontStyle": "italic"}),
+                html.Sub(str(j1)),
+                html.Span(")"),
+            ],
+            style=st,
+        )
 
     def _equation_children(idx: int, wrap_every: int = 8):
         w = coefs[idx]
         nz = np.flatnonzero(w != 0.0)
         parts = []
         parts.append(html.Span("ŷ = ", style={"fontWeight": 700}))
-        parts.extend([html.Span("β", style={"fontStyle": "italic", "fontWeight": 700}), html.Sub("0")])
+        parts.extend(
+            [
+                html.Span("β", style={"fontStyle": "italic", "fontWeight": 700}),
+                html.Sub("0"),
+            ]
+        )
         if nz.size:
             parts.append(html.Span("+", style=styles["plus"]))
             line_terms, count = [], 0
@@ -99,7 +117,9 @@ def make_lasso_component(app, uid="lasso", *, n=50, p=150):
                     line_terms = []
             parts.extend(line_terms)
         else:
-            parts.append(html.Span(" (no predictors selected)", style={"color": "#665"}))
+            parts.append(
+                html.Span(" (no predictors selected)", style={"color": "#665"})
+            )
         return parts
 
     # ---------------------------
@@ -109,32 +129,43 @@ def make_lasso_component(app, uid="lasso", *, n=50, p=150):
         id={"type": "lasso-wrap", "uid": uid},
         style=styles["wrap"],
         children=[
-                html.H1("A \"Simple\" Demonstration of LASSO Regularization"),
-                html.P(
-                    """
+            html.H1('A "Simple" Demonstration of LASSO Regularization'),
+            html.P(
+                """
 To get a grasp of how the Lasso (Least Absolute Shrinkage and Selection Operator) regression method handles high dimensional data, it is best to look at a simple example. In the real world high dimensional data typically has thousands or even millions of parameters coupled with a smaller number of observations. However, these data sets do not lend themselves to easy explanations. Thus, we created a synthetic data set for demonstration purposes. 
 """
-                ),
-                html.P(
-                    """
+            ),
+            html.P(
+                """
 The interactive graph below is based on a data set we created with Numpy, a python module, that has 150 parameters (p=150) and 50 observations (n=50). This is no doubt a small data set. But, by definition, it is a high dimensional dataset none the less (p >> n). Because we created the data set, we had the luxury of making our own true β’s which are located at β20, β40, β60, β80, β99, and β100. We set a signal to noise ratio of 5 to create our X matrix, β Matrix, and error matrix resulting in a y equation at y = Xβ + ε. 
 """
-                ),
-                html.P(
-                    """
+            ),
+            html.P(
+                """
 Finally, using Sklearn, another python module, we split our synthetic data into a portion for training and a portion for testing and iteratively created 6 LASSO models at incremental alpha levels (0.0001, 0.001, 0.01, 0.1, 1, 10) to illustrate the model pushing β coefficients into and out of the model. Think of the alpha level as the “penalty” the model applies to each β coefficient. As the alpha level gets smaller, the β coefficients will receive a small push towards zero, leaving most of the coefficients in the model. Conversely, as the alpha level grows larger, the β coefficients receive a large push towards zero which removes many of the coefficients entirely.
 """
-                ),
-            html.Div("Visualization of the relationship between α and number of predictors", style=styles["title"]),
-            html.Div("Move the alpha (α) slider to watch predictor add and drop from the model. True predictors are red.",
-                     style=styles["subtitle"]),
+            ),
+            html.Div(
+                "Visualization of the relationship between α and number of predictors",
+                style=styles["title"],
+            ),
+            html.Div(
+                "Move the alpha (α) slider to watch predictor add and drop from the model. True predictors are red.",
+                style=styles["subtitle"],
+            ),
             dcc.Slider(
                 id={"type": "lasso-alpha", "uid": uid},
-                min=0, max=len(alphas)-1, step=None, value=len(alphas)//2,
-                marks=marks, tooltip={"always_visible": False}
+                min=0,
+                max=len(alphas) - 1,
+                step=None,
+                value=len(alphas) // 2,
+                marks=marks,
+                tooltip={"always_visible": False},
             ),
             html.Div(id={"type": "lasso-metrics", "uid": uid}, style=styles["metrics"]),
-            html.Div(id={"type": "lasso-equation", "uid": uid}, style=styles["equation"]),
+            html.Div(
+                id={"type": "lasso-equation", "uid": uid}, style=styles["equation"]
+            ),
         ],
     )
 
