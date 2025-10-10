@@ -1,4 +1,4 @@
-# 5: Why this actually matters in the real world
+# 5: Other real world applications
 
 High-dimensional problems are everywhere:
 
