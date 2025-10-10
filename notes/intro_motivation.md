@@ -1,0 +1,2 @@
+# Introduction & Motivation
+Modern data science often works with high-dimensional problems. These are cases where the number of predictors (p) is very large, sometimes even larger than the number of observations (n). This setting is very different from the low-dimensional cases we studied before—it creates unique challenges. Overfitting: models may fit noise rather than true patterns. Interpretability: with many predictors, it is unclear which ones truly matter. Computation: handling thousands of predictors is difficult for methods like ordinary least squares (OLS).
