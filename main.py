@@ -13,7 +13,8 @@ app = dash.Dash(__name__)
 NOTES_DIR = Path("notes")
 
 _SECTION_FILES = [
-    "01_intro.md",
+    "00_intro.md",
+    "01_startMLR.md",
     "02_highdim_setting.md",
     "03_ols_breakdown.md",
     "04_regularization_dimred.md",
@@ -55,16 +56,16 @@ app.layout = html.Div(
         ),
         html.Hr(),
         # introduction
-        render_section("01_intro.md"),
-        # interactive_layout,
+        render_section("00_intro.md"),
+        render_section("01_startMLR.md"),
         render_section("02_highdim_setting.md"),
         render_section("03_ols_breakdown.md"),
         render_section("04_regularization_dimred.md"),
         render_section("05_why_matters.md"),
-        render_section(""),
-        # another_plot,
         make_lasso_component(app, uid="lasso-demo"),
         render_section("references.md"),
+        # interactive_layout,
+        # another_plot,
         dcc.Interval(id="refresh", interval=2000),
     ],
 )
