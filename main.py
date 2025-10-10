@@ -1,6 +1,7 @@
-import dash
-from dash import dcc, html, Input, Output
 from pathlib import Path
+
+import dash
+from dash import Input, Output, dcc, html
 
 from components.interactive1 import interactive_layout
 from components.interactive2 import another_plot
@@ -12,6 +13,7 @@ _SECTION_FILES = [
     "01_intro.md",
     "02_ols_breakdown.md",
     "03_regularization.md",
+    "references.md",
 ]
 
 
@@ -38,13 +40,18 @@ app.layout = html.Div(
         "color": "#222",
     },
     children=[
-        html.H1("When Predictors Outnumber Data: Making Sense of High-Dimensional Regression", style={"textAlign": "center"}),
+        html.H1(
+            "When Predictors Outnumber Data: Making Sense of High-Dimensional Regression",
+            style={"textAlign": "center"},
+        ),
         html.Hr(),
+        # introduction
         render_section("01_intro.md"),
         interactive_layout,
         render_section("02_ols_breakdown.md"),
         another_plot,
         render_section("03_regularization.md"),
+        render_section("references.md"),
         dcc.Interval(id="refresh", interval=2000),
     ],
 )
