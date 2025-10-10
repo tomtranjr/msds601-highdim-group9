@@ -1,56 +1,68 @@
 # msds601-highdim-group9
 
-## Project Overview
-This repository houses the MSDS 601 High-Dimensional Regression group project. The work focuses on comparing regularization techniques (Ridge, LASSO) and related linear modeling strategies in settings where the number of predictors approaches or exceeds the number of observations. Exploratory notebooks walk through data preparation, model fitting, diagnostics, and visualization, while `notes.md` captures supporting theory and intuition for high-dimensional regression.
+Interactive Plotly Dash experience that walks through the concepts, intuition, and tooling for high-dimensional regression. The site blends live Markdown notes with reusable Dash components that demonstrate phenomena such as full-rank design matrices, LASSO selection, and economic intuition.
 
-## Repository Structure
-- `Eames_lasso_working.ipynb` – exploratory notebook experimenting with LASSO, Ridge, and supporting visualizations.
-- `Niki_Project_linear.ipynb` – complementary notebook covering linear modeling workflow and plotting utilities.
-- `notes.md` – theory notes summarizing key ideas and formulas for high-dimensional regression.
-- `test.py` – simple smoke script; extend or replace with project-specific tests.
-- `requirements.txt` – Python dependencies required by the notebooks and supporting scripts.
+## Highlights
 
-## Environment Setup with uv
-[`uv`](https://github.com/astral-sh/uv) is a fast Python package and environment manager. Follow the steps below to create a reproducible environment:
+- **Live-updating notes** sourced from modular Markdown files under `notes/`.
+- **Interactive demos** inside `components/` showing LASSO paths, rank diagnostics, and regression workflows.
+- **Unified styling** via `assets/styles.css` and shared design tokens in `theme.py`.
+- **Synthetic-data notebooks** (`*.ipynb`) that back up the narratives with exploratory work.
 
-1. **Install uv** (if not already available). Follow the latest instructions from the uv documentation for your platform.
-2. **Create a dedicated virtual environment** in the project directory:
+## Repository Layout
+
+- `main.py` – Dash entry point that assembles Markdown sections and interactive components.
+- `assets/styles.css` – Global styling (including smooth scrolling) loaded automatically by Dash.
+- `theme.py` – Centralized color palette used across layouts.
+- `components/` – Modular Dash components (`table_of_contents.py`, `full_rank_component.py`, `lasso_component.py`, etc.).
+- `notes/` – Sectioned Markdown content (`00_intro.md`, `03_ols_breakdown.md`, `references.md`, `contributors.md`, …).
+- `requirements.txt` / `pyproject.toml` – Locked dependencies (generated with `uv`).
+- `Eames_lasso_working.ipynb`, `Niki_Project_linear.ipynb` – Supporting exploratory notebooks.
+- `uv.lock` – Deterministic dependency lockfile.
+
+## Getting Started (via `uv`)
+
+[`uv`](https://github.com/astral-sh/uv) provides fast env/dep management.
+
+1. **Create the virtual environment**
+
    ```bash
    uv venv
    ```
-3. **Activate the environment**:
+
+2. **Activate it**
    ```bash
-   source .venv/bin/activate            # macOS/Linux
+   source .venv/bin/activate      # macOS/Linux
    # or
-   .venv\\Scripts\\activate            # Windows PowerShell
+   .venv\Scripts\activate         # Windows PowerShell
    ```
-4. **Install dependencies**:
+
+3. **Install dependencies**
+
    ```bash
    uv pip install -r requirements.txt
    ```
 
-## Working with the Project
-- **Launch Jupyter** to explore the notebooks:
-  ```bash
-  uv run jupyter notebook
-  ```
-  Open `Eames_lasso_working.ipynb` or `Niki_Project_linear.ipynb` inside the browser to reproduce the analyses or continue iterating.
+4. **Run the Dash app**
 
-- **Run helper scripts** such as `test.py` inside the managed environment:
-  ```bash
-  uv run python test.py
-  ```
+   ```bash
+   uv run python main.py
+   ```
 
-- **Add new packages** as work evolves:
-  ```bash
-  uv pip install <package-name>
-  uv pip freeze > requirements.txt
-  ```
-  Commit the updated `requirements.txt` so collaborators stay in sync.
+   Open `http://127.0.0.1:8050/` in your browser. Markdown edits refresh automatically every 2 seconds.
 
-## Additional Notes
-- `notes.md` is a living document—expand it with insights, references, or derivations uncovered during research.
-- Keep notebooks tidy by clearing outputs before committing (`jupyter nbconvert --clear-output` can help).
-- When collaborating, sync frequently (`git pull`) and resolve notebook merge conflicts promptly—consider using tools like `nbdime` in the uv environment if conflicts arise.
+## Editing Content & Components
 
-Happy modeling!
+- **Markdown notes** live in `notes/`. Adding a new file? Append it to `_SECTION_FILES` in `main.py` and call `render_section("your_file.md")`.
+- **Interactive modules** belong in `components/` and should follow the `make_<name>_component` pattern with scoped callbacks (see `full_rank_component.py`).
+- **Styling tweaks** go in `assets/styles.css`; Dash reloads the file on change.
+
+## Notebooks & Analysis
+
+Exploratory notebooks remain available:
+```bash
+uv run jupyter notebook
+```
+Use them to prototype experiments or generate figures that feed back into the app.
+
+Enjoy exploring high-dimensional regression! Feel free to open issues or PRs with improvements or new demos.
