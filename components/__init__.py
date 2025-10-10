@@ -5,5 +5,6 @@ __all__ = [
     "interactive2",
     "lasso_component",
     "full_rank_component",
+    "table_of_contents",
     "utils",
 ]

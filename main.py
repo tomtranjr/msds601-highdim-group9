@@ -7,6 +7,7 @@ from components.coef_paths import make_lasso_path_component
 from components.econ_demo import make_econ_component
 from components.full_rank_component import make_full_rank_component
 from components.lasso_component import make_lasso_component
+from components.table_of_contents import make_table_of_contents
 from theme import COLORS
 
 app = dash.Dash(__name__)
@@ -14,7 +15,6 @@ app = dash.Dash(__name__)
 NOTES_DIR = Path("notes")
 
 _SECTION_FILES = [
-    "contributors.md",
     "00_intro.md",
     "01_startMLR.md",
     "02_highdim_setting.md",
@@ -22,6 +22,7 @@ _SECTION_FILES = [
     "04_regularization_dimred.md",
     "05_why_matters.md",
     "references.md",
+    "contributors.md",
 ]
 
 
@@ -58,7 +59,7 @@ app.layout = html.Div(
         ),
         html.Hr(),
         # introduction
-        render_section("contributors.md"),
+        make_table_of_contents(),
         render_section("00_intro.md"),
         render_section("01_startMLR.md"),
         render_section("02_highdim_setting.md"),
@@ -74,6 +75,7 @@ app.layout = html.Div(
         render_section("references.md"),
         # interactive_layout,
         # another_plot,
+        render_section("contributors.md"),
         dcc.Interval(id="refresh", interval=2000),
     ],
 )
