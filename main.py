@@ -3,6 +3,7 @@ from pathlib import Path
 import dash
 from dash import Input, Output, dcc, html
 
+from components.full_rank_component import make_full_rank_component
 from components.interactive1 import interactive_layout
 from components.interactive2 import another_plot
 from components.lasso_component import make_lasso_component
@@ -60,6 +61,7 @@ app.layout = html.Div(
         render_section("01_startMLR.md"),
         render_section("02_highdim_setting.md"),
         render_section("03_ols_breakdown.md"),
+        make_full_rank_component(app, uid="fullrank-demo"),
         render_section("04_regularization_dimred.md"),
         render_section("05_why_matters.md"),
         make_lasso_component(app, uid="lasso-demo"),
