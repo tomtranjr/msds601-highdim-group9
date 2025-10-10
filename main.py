@@ -57,6 +57,19 @@ app.layout = html.Div(
             "When Predictors Outnumber Data: Making Sense of High-Dimensional Regression",
             style={"textAlign": "center"},
         ),
+        html.P(
+            [
+                "Source code available on ",
+                html.A(
+                    "GitHub",
+                    href="https://github.com/tomtranjr/msds601-highdim-group9",
+                    target="_blank",
+                    rel="noopener noreferrer",
+                ),
+                ".",
+            ],
+            style={"textAlign": "center", "marginTop": "12px"},
+        ),
         html.Hr(),
         # introduction
         make_table_of_contents(),
