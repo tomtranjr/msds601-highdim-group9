@@ -3,10 +3,9 @@ from pathlib import Path
 import dash
 from dash import Input, Output, dcc, html
 
+from components.coef_paths import make_lasso_path_component
 from components.econ_demo import make_econ_component
 from components.full_rank_component import make_full_rank_component
-from components.interactive1 import interactive_layout
-from components.interactive2 import another_plot
 from components.lasso_component import make_lasso_component
 from theme import COLORS
 
@@ -67,6 +66,9 @@ app.layout = html.Div(
         make_econ_component(app, uid="econ-demo"),
         make_lasso_component(app, uid="lasso-demo"),
         render_section("05_why_matters.md"),
+        make_lasso_path_component(
+            app, uid="lasso-demo", n=40, p=120, seed=0, target_signal_noise_ratio=5.0
+        ),
         render_section("references.md"),
         # interactive_layout,
         # another_plot,
