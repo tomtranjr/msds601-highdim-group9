@@ -1,14 +1,33 @@
 import dash
-from dash import html, dcc
+from dash import dcc, html, Input, Output
 from pathlib import Path
 
-# Initialize the Dash app
+from components.interactive1 import interactive_layout
+from components.interactive2 import another_plot
+
 app = dash.Dash(__name__)
 
-# Markdown content (your blog)
-markdown_text = Path("notes.md").read_text()
+NOTES_DIR = Path("notes")
+_SECTION_FILES = [
+    "01_intro.md",
+    "02_ols_breakdown.md",
+    "03_regularization.md",
+]
 
-# Define the layout
+
+def read_md(filename: str) -> str:
+    return (NOTES_DIR / filename).read_text(encoding="utf-8")
+
+
+def render_section(filename: str) -> dcc.Markdown:
+    section_id = f"md-{Path(filename).stem}"
+    return dcc.Markdown(
+        read_md(filename),
+        id=section_id,
+        mathjax=True,
+    )
+
+
 app.layout = html.Div(
     style={
         "margin": "auto",
@@ -19,12 +38,25 @@ app.layout = html.Div(
         "color": "#222",
     },
     children=[
-        html.H1("High Dimensional Regression Blog", style={"textAlign": "center"}),
+        html.H1("When Predictors Outnumber Data: Making Sense of High-Dimensional Regression", style={"textAlign": "center"}),
         html.Hr(),
-        dcc.Markdown(markdown_text, mathjax=True),
+        render_section("01_intro.md"),
+        interactive_layout,
+        render_section("02_ols_breakdown.md"),
+        another_plot,
+        render_section("03_regularization.md"),
+        dcc.Interval(id="refresh", interval=2000),
     ],
 )
 
-# Run the app
+
+@app.callback(
+    [Output(f"md-{Path(filename).stem}", "children") for filename in _SECTION_FILES],
+    Input("refresh", "n_intervals"),
+)
+def update_markdown(_):
+    return [read_md(filename) for filename in _SECTION_FILES]
+
+
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)
