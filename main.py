@@ -5,6 +5,7 @@ from dash import Input, Output, dcc, html
 
 from components.interactive1 import interactive_layout
 from components.interactive2 import another_plot
+from theme import COLORS
 
 app = dash.Dash(__name__)
 
@@ -30,15 +31,19 @@ def render_section(filename: str) -> dcc.Markdown:
     )
 
 
+PAGE_STYLE = {
+    "margin": "auto",
+    "maxWidth": "850px",
+    "padding": "40px",
+    "fontFamily": "Helvetica, Arial, sans-serif",
+    "lineHeight": "1.6",
+    "color": COLORS["text_black"],
+    "backgroundColor": COLORS["surface_white"],
+}
+
+
 app.layout = html.Div(
-    style={
-        "margin": "auto",
-        "maxWidth": "850px",
-        "padding": "40px",
-        "fontFamily": "Helvetica, Arial, sans-serif",
-        "lineHeight": "1.6",
-        "color": "#222",
-    },
+    style=PAGE_STYLE,
     children=[
         html.H1(
             "When Predictors Outnumber Data: Making Sense of High-Dimensional Regression",
